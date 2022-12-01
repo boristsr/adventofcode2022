@@ -18,7 +18,6 @@ for line in Lines:
         current_calorie_count = 0
         continue
     
-    print(line.strip())
     current_calories = int(line.strip())
     current_calorie_count += current_calories
 

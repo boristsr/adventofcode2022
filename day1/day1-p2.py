@@ -12,7 +12,7 @@ def add_elf(new_index, new_calories, max_elves = 3):
         min_elf_index = -1
         min_elf_count = -1
         for index in top_elves:
-            if min_elf_index is -1:
+            if min_elf_index == -1:
                 min_elf_index = index
                 min_elf_count = top_elves[index]
             else:
@@ -27,7 +27,7 @@ def add_elf(new_index, new_calories, max_elves = 3):
         top_elves[new_index] = new_calories
 
 for line in Lines:
-    if line.strip() is "":
+    if line.strip() == "":
         add_elf(current_index, current_calorie_count)
         
         current_index += 1
