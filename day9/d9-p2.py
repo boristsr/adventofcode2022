@@ -32,7 +32,9 @@ def update_knot(forward_knot: List[int], current_knot: List[int]) -> bool:
             y_move *= -1
         current_knot[0] += x_move
         current_knot[1] += y_move
+        #Knot moved
         return True
+    #knot didn't move
     return False
 
 def move_head(direction: str):
@@ -47,6 +49,7 @@ def move_head(direction: str):
         head_knot[1] -= 1
     for i in range(1, len(knot_positions)):
         updated = update_knot(knot_positions[i-1], knot_positions[i])
+        #if this knot didn't move, then the rest of the chain doesn't need to be evaluated again
         if updated == False:
             break
     tail_visited_positions.add(tuple(knot_positions[NUM_KNOTS-1]))
