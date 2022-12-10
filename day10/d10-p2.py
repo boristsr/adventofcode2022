@@ -31,7 +31,7 @@ class Processor:
             self.vram.append(row)
 
     def draw_pixel(self):
-        print(self.current_pixel_pos)
+        #print(self.current_pixel_pos)
         if self.register_x >= self.current_pixel_pos[0]-1 and self.register_x <= self.current_pixel_pos[0]+1:
             self.vram[self.current_pixel_pos[1]][self.current_pixel_pos[0]] = "#"
         else:
