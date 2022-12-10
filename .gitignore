@@ -127,4 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+#don't allow puzzle inputs to be committed
+test.txt
+test2.txt
 input.txt
+input2.txt
