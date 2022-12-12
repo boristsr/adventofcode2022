@@ -2,10 +2,33 @@ from typing import List, Tuple, Optional, Set, Dict
 from os.path import join
 import shlex
 import math
+import functools
 
 inputfile = open('day11/input.txt', 'r')
-#inputfile = open('day11/test.txt', 'r')
+inputfile = open('day11/test.txt', 'r')
 Lines = inputfile.readlines()
+
+@functools.lru_cache(maxsize=None)
+def get_operand(item, operand_val):
+    operand = None
+    if operand_val == "old":
+        operand = item
+    else:
+        operand = int(operand_val)
+    return operand
+
+@functools.lru_cache(maxsize=None)
+def inspect_op(operand_a, operand_b, operator):
+    op_result = 0
+    if operator == "+":
+        op_result = operand_a + operand_b
+    elif operator == "*":
+        op_result = operand_a * operand_b
+    elif operator == "/":
+        op_result = operand_a / operand_b
+    elif operator == "-":
+        op_result = operand_a - operand_b
+    return op_result
 
 class Monkey():
     def __init__(self) -> None:
@@ -46,30 +69,16 @@ class Monkey():
         self.true_dst = int(self.line_syms[4][-1])
         self.false_dst = int(self.line_syms[5][-1])
 
-    def get_operand(self, item, operand_val):
-        operand = None
-        if operand_val == "old":
-            operand = item
-        else:
-            operand = int(operand_val)
-        return operand
-
+    @functools.lru_cache(maxsize=None)
     def inspect(self, item):
         self.inspection_count += 1
-        operand_a = self.get_operand(item, self.operation[0])
-        operand_b = self.get_operand(item, self.operation[2])
-        op_result = 0
-        if self.operation[1] == "+":
-            op_result = operand_a + operand_b
-        elif self.operation[1] == "*":
-            op_result = operand_a * operand_b
-        elif self.operation[1] == "/":
-            op_result = operand_a / operand_b
-        elif self.operation[1] == "-":
-            op_result = operand_a - operand_b
+        operand_a = get_operand(item, self.operation[0])
+        operand_b = get_operand(item, self.operation[2])
+        op_result = inspect_op(operand_a, operand_b, self.operation[1])
         
         return op_result
         
+    @functools.lru_cache(maxsize=None)
     def test(self, item):
         if self.test_op[0] == "divisible":
             divisible = item % int(self.test_op[-1])
@@ -133,9 +142,9 @@ def run_rounds(rounds):
 
     print(monkey_business)
 
-run_rounds(NUM_ROUNDS)
+#run_rounds(NUM_ROUNDS)
 
-exit()
+#exit()
 
 import cProfile
 import re
