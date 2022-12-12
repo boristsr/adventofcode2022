@@ -5,7 +5,7 @@ import math
 import functools
 
 inputfile = open('day11/input.txt', 'r')
-inputfile = open('day11/test.txt', 'r')
+#inputfile = open('day11/test.txt', 'r')
 Lines = inputfile.readlines()
 
 @functools.lru_cache(maxsize=None)
@@ -144,8 +144,8 @@ def run_rounds(rounds):
 
 #run_rounds(NUM_ROUNDS)
 
-#exit()
+exit()
 
-import cProfile
-import re
-cProfile.run(f'run_rounds({NUM_ROUNDS})')
+#import cProfile
+#import re
+#cProfile.run(f'run_rounds({NUM_ROUNDS})')
