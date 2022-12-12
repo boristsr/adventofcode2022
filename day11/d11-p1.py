@@ -2,7 +2,6 @@ from typing import List, Tuple, Optional, Set, Dict
 from os.path import join
 import shlex
 import math
-import numpy as np
 
 inputfile = open('day11/input.txt', 'r')
 #inputfile = open('day11/test.txt', 'r')
@@ -122,7 +121,6 @@ inspection_counts = []
 for m in monkeys:
     inspection_counts.append(m.inspection_count)
 
-inspection_counts = np.array(inspection_counts)
 inspection_counts.sort()
 
 monkey_business = inspection_counts[-1] * inspection_counts[-2]
