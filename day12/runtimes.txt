@@ -1,0 +1,9 @@
+d12-p2
+pypy3 44.73
+python3.10 3:39.82
+python3.11 3:23.49
+
+d12-p2-opt:
+pypy3 11.46
+python3.10 55.34
+python3.11 53.31
