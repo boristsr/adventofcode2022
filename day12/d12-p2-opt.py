@@ -51,6 +51,10 @@ def is_valid_neighbor(current, neighbor, came_from):
     curr_height = map[current[1]][current[0]]
     new_neighbor_height = map[neighbor[1]][neighbor[0]]
     height_diff = new_neighbor_height - curr_height
+
+    if new_neighbor_height == 0:
+        return False
+
     if height_diff > 1:
         return False
     
@@ -118,7 +122,7 @@ def a_star(start, goal, h):
                 if neighbor not in open_set:
                     open_set.append(neighbor)
 
-    print(f'Failed to find a path after {search_steps} search steps')
+    #print(f'Failed to find a path after {search_steps} search steps')
     return []
     
 
