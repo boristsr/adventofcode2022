@@ -41,12 +41,22 @@ for line in lines:
     for point in line:
         AABB.add_point(point)
 
-AABB_extent = AABB.get_size()
-print(AABB_extent)
 print(AABB.get_min())
 print(AABB.get_max())
 
-EMPTY_CELL = ' '
+max_y = AABB.get_max()[1] + 2
+max_left = [sand_spawn_point[0] - max_y - 1, max_y]
+max_right = [sand_spawn_point[0] + max_y + 1, max_y]
+AABB.add_point(max_left)
+AABB.add_point(max_right)
+lines.append([max_left, max_right])
+
+AABB_extent = AABB.get_size()
+print(AABB_extent)
+
+EMPTY_CELL = '.'
+SAND_CELL = 'o'
+START_CELL = '+'
 map = []
 for y in range(AABB_extent[1] + 1):
     map.append([EMPTY_CELL] * (AABB_extent[0] + 1))
@@ -87,9 +97,7 @@ for line_set in lines:
         draw_line(line_set[i], line_set[i+1], map, "#", AABB)
 
 #Draw Sand Spawn Point
-draw_cell(sand_spawn_point, map, "+", AABB)
-
-
+draw_cell(sand_spawn_point, map, START_CELL, AABB)
 
 def get_cell(coord, map, AABB):
     new_coord = transform_coord(coord, AABB)
@@ -104,6 +112,8 @@ down_left_vec_step = [-1,1]
 down_right_vec_step = [1,1]
 
 def simulate_sand_particle(spawn_coord, map, AABB):
+    if get_cell(spawn_coord, map, AABB) == SAND_CELL:
+        return False
     max_y = AABB.get_max()[1]
     curr_coord = spawn_coord.copy()
     at_rest = False
@@ -122,19 +132,16 @@ def simulate_sand_particle(spawn_coord, map, AABB):
         if down_cell == EMPTY_CELL or down_cell == False:
             curr_coord = down_vec
             if down_cell == False:
-                print("OOB")
                 out_of_bounds = True
         #attempt step left
         elif down_left_cell == EMPTY_CELL or down_left_cell == False:
             curr_coord = down_left_vec
             if down_left_cell == False:
-                print("OOB")
                 out_of_bounds = True
         #attempt step right
         elif down_right_cell == EMPTY_CELL or down_right_cell == False:
             curr_coord = down_right_vec
             if down_right_cell == False:
-                print("OOB")
                 out_of_bounds = True
         #At rest
         else:
@@ -144,17 +151,20 @@ def simulate_sand_particle(spawn_coord, map, AABB):
         #draw_map(map)
 
     if at_rest:
-        print("at rest")
-        draw_cell(curr_coord, map, 'o', AABB)
+        #print("at rest")
+        draw_cell(curr_coord, map, SAND_CELL, AABB)
         return True
     else:
         return False
 
+draw_map(map)
+
 sand_particles = 0
 while simulate_sand_particle(sand_spawn_point, map, AABB):
     sand_particles += 1
-    print(sand_particles)
+    #print(sand_particles)
     pass
 
 #Draw Map
 draw_map(map)
+print(sand_particles)
