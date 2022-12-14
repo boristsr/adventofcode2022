@@ -141,8 +141,9 @@ for y in range(len(map)):
         if map[y][x] == 0:
             num_starting_points += 1
             path = a_star(start_loc, end_loc, heuristic)
-            if len(path) < shortest_path and len(path) != 0:
+            if len(path) != 0:
                 num_valid_paths += 1
+            if len(path) < shortest_path and len(path) != 0:
                 shortest_path = len(path)
 
 print("Total Steps Taken: " + str(shortest_path-1))
