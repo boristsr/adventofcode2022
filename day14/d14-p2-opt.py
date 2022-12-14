@@ -111,15 +111,15 @@ down_vec_step = [0,1]
 down_left_vec_step = [-1,1]
 down_right_vec_step = [1,1]
 
-def simulate_sand_particle(spawn_coord, map, AABB):
+def simulate_sand_particle(spawn_coord, map, AABB, path):
     if get_cell(spawn_coord, map, AABB) == SAND_CELL:
         return False
     max_y = AABB.get_max()[1]
-    curr_coord = spawn_coord.copy()
+    curr_coord = path.pop()
     at_rest = False
     out_of_bounds = False
     step = 0
-    while curr_coord[1] <= max_y and at_rest == False and out_of_bounds == False:
+    while curr_coord[1] < max_y and at_rest == False and out_of_bounds == False:
         step += 1
         down_vec = Vector.add_vector(curr_coord, down_vec_step)
         down_left_vec = Vector.add_vector(curr_coord, down_left_vec_step)
@@ -130,25 +130,25 @@ def simulate_sand_particle(spawn_coord, map, AABB):
         down_right_cell = get_cell(down_right_vec, map, AABB)
         #attempt step down
         if down_cell == EMPTY_CELL or down_cell == False:
+            path.append(curr_coord)
             curr_coord = down_vec
             if down_cell == False:
                 out_of_bounds = True
         #attempt step left
         elif down_left_cell == EMPTY_CELL or down_left_cell == False:
+            path.append(curr_coord)
             curr_coord = down_left_vec
             if down_left_cell == False:
                 out_of_bounds = True
         #attempt step right
         elif down_right_cell == EMPTY_CELL or down_right_cell == False:
+            path.append(curr_coord)
             curr_coord = down_right_vec
             if down_right_cell == False:
                 out_of_bounds = True
         #At rest
         else:
             at_rest = True
-        
-        #draw_cell(curr_coord, map, str(step), AABB)
-        #draw_map(map)
 
     if at_rest:
         #print("at rest")
@@ -156,11 +156,14 @@ def simulate_sand_particle(spawn_coord, map, AABB):
         return True
     else:
         return False
+    
+    return False
 
 draw_map(map)
 
 sand_particles = 0
-while simulate_sand_particle(sand_spawn_point, map, AABB):
+prev_path = [sand_spawn_point]
+while simulate_sand_particle(sand_spawn_point, map, AABB, prev_path):
     sand_particles += 1
     #print(sand_particles)
     pass
