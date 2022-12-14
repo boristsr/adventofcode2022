@@ -4,7 +4,7 @@ import shlex
 import math
 
 inputfile = open('day12/input.txt', 'r')
-inputfile = open('day12/test.txt', 'r')
+#inputfile = open('day12/test.txt', 'r')
 Lines = inputfile.readlines()
 
 map: List[List[int]] = []
@@ -117,7 +117,7 @@ def a_star(start, goal, h):
                 if neighbor not in open_set:
                     open_set.append(neighbor)
 
-    print(f'Failed to find a path after {search_steps} search steps')
+    #print(f'Failed to find a path after {search_steps} search steps')
     return []
     
 
@@ -132,4 +132,4 @@ print("Goal Location: " + str(end_loc))
 path = a_star(start_loc, end_loc, heuristic)
 
 print("Total Steps Taken: " + str(len(path)-1))
-print(path)
+#print(path)
