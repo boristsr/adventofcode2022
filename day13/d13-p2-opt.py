@@ -79,17 +79,14 @@ pairs = get_pairs(Lines)
 #insert divider packets
 divider_a = [[2]]
 divider_b = [[6]]
-pairs.append([ divider_a, divider_b ])
 
 big_list = []
 for pair in pairs:
     big_list.extend(pair)
 
-#big_list.sorted(cmp=compare_lists)
-big_list = sorted(big_list, key=functools.cmp_to_key(compare_lists))
-
-da_idx = big_list.index(divider_a)
-db_idx = big_list.index(divider_b)
+#add all elements less than [[2]]
+da_idx = sum(compare_lists(p, [[2]]) < 0 for p in big_list)
+#Add all elements less than [[6]] + 1 for the first divider
+db_idx = sum(compare_lists(p, [[6]]) < 0 for p in big_list) + 1
 
 print((da_idx + 1) * (db_idx + 1))
-
