@@ -50,10 +50,8 @@ def reconstruct_path(came_from, current):
 def is_valid_neighbor(current, neighbor, came_from):
     curr_height = map[current[1]][current[0]]
     new_neighbor_height = map[neighbor[1]][neighbor[0]]
-    height_diff = new_neighbor_height - curr_height
-
-    if new_neighbor_height == 0:
-        return False
+    #Flip height comparison since we are going backwards now
+    height_diff = curr_height - new_neighbor_height
 
     if height_diff > 1:
         return False
@@ -105,7 +103,9 @@ def a_star(start, goal, h):
     while len(open_set) > 0:
         search_steps += 1
         current = open_set.pop(0)
-        if current == goal:
+        #Theres no set endpoint, just a target height
+        curr_height = map[current[1]][current[0]]
+        if curr_height == 0:
             print(f'Reconstructing path after {search_steps} search steps')
             return reconstruct_path(came_from, current)
         
@@ -122,7 +122,7 @@ def a_star(start, goal, h):
                 if neighbor not in open_set:
                     open_set.append(neighbor)
 
-    #print(f'Failed to find a path after {search_steps} search steps')
+    print(f'Failed to find a path after {search_steps} search steps')
     return []
     
 
@@ -139,17 +139,8 @@ shortest_path = 300000000
 num_starting_points = 0
 num_valid_paths = 0
 
-for y in range(len(map)):
-    for x in range(len(map[0])):
-        start_loc = (x,y)
-        if map[y][x] == 0:
-            num_starting_points += 1
-            path = a_star(start_loc, end_loc, heuristic)
-            if len(path) < shortest_path and len(path) != 0:
-                num_valid_paths += 1
-                shortest_path = len(path)
+#Only a single walk backwards is necessary now
+path = a_star(end_loc, start_loc, heuristic)
+shortest_path = len(path)
 
 print("Total Steps Taken: " + str(shortest_path-1))
-print("Num Starting Points: " + str(num_starting_points))
-print("Num Valid Paths: " + str(num_valid_paths))
-#print(path)
