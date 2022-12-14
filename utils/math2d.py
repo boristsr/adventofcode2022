@@ -96,15 +96,15 @@ class AxisAlignedBoundingBox2D():
         return newSize
 
 class Point2D:
-    def __init__(self,x: int | float = 0, y: int | float = 0) -> None:
-        self.point: List[int | float] = [x,y]
+    def __init__(self,x: AnyNumber = 0, y: AnyNumber = 0) -> None:
+        self.point: List[AnyNumber] = [x,y]
 
     @property
     def x(self):
         return self.point[0]
     
     @x.setter
-    def x(self, value: int | float):
+    def x(self, value: AnyNumber):
         self.point[0] = value
 
     @property
@@ -112,7 +112,7 @@ class Point2D:
         return self.point[1]
     
     @y.setter
-    def y(self, value: int | float):
+    def y(self, value: AnyNumber):
         self.point[1] = value
     
     @property
