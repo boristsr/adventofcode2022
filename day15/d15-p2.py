@@ -17,6 +17,7 @@ class Sensor:
     def __init__(self, pos: Tuple[int,int] = (0,0), nearest_beacon: Tuple[int,int] = (0,0)) -> None:
         self.pos: Tuple[int,int] = pos
         self.nearest_beacon: Tuple[int,int] = nearest_beacon
+        self.distance = self.get_manhattan_distance()
 
     def get_manhattan_distance(self):
         return abs(self.pos[0] - self.nearest_beacon[0]) + abs(self.pos[1] - self.nearest_beacon[1])
@@ -78,7 +79,7 @@ def combine_lines(lines):
 def get_excluded_locations(y_target: int, sensors: List[Sensor]) -> Set[Tuple[int,int]]:
     lines = []
     for sensor in sensors:
-        leftover_distance = sensor.get_manhattan_distance() - abs(y_target - sensor.pos[1])
+        leftover_distance = sensor.distance - abs(y_target - sensor.pos[1])
         if leftover_distance >= 0:
             #start_pos = (sensor.pos[0], y_target)
             #can reach y target, so iterate over reachable tiles
@@ -108,17 +109,21 @@ for i in range(0,max_dimension):
 #remaining = valid_index_set.difference(excluded_locs[1])
 #print(remaining)
 
-for i in range(0, max_dimension + 1):
-    if i % 100 == 0:
-        print(i)
-    excluded_lines = get_excluded_locations(i, in_sensors)
-    if excluded_lines is not None:
-        print(excluded_lines)
-        max_start = max(excluded_lines[0][0],excluded_lines[1][0])
-        min_end = min(excluded_lines[0][1],excluded_lines[1][1])
-        print(f'({min_end + 1},{i})')
-        tuning_freq = (min_end + 1) * 4000000 + i
-        print(tuning_freq)
-        break
+def solve():
+    for i in range(0, max_dimension + 1):
+        excluded_lines = get_excluded_locations(i, in_sensors)
+        if excluded_lines is not None:
+            print(excluded_lines)
+            max_start = max(excluded_lines[0][0],excluded_lines[1][0])
+            min_end = min(excluded_lines[0][1],excluded_lines[1][1])
+            print(f'({min_end + 1},{i})')
+            tuning_freq = (min_end + 1) * 4000000 + i
+            print(tuning_freq)
+            break
 
+solve()
 print("Done")
+
+#import cProfile
+#import re
+#cProfile.run(f'solve()')
